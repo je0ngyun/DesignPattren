@@ -37,7 +37,7 @@ preview.showTitle();
 preview.showPreview();
 
 //응용해보기 title,uri 캡슐화
-const C_Proxy = (function () {
+const C_Proxy = function (_title, _uri) {
   let title;
   let uri;
   let PreviewService;
@@ -63,12 +63,22 @@ const C_Proxy = (function () {
       if (PreviewService == undefined) {
         PreviewService = new C_PreviewService(title, uri);
         PreviewService.showPreview();
+        return;
       }
+      PreviewService.showPreview();
     }
   }
-  return C_Proxy;
-})();
+  return new C_Proxy(_title, _uri);
+};
 
-let c_preview = new C_Proxy('타이틀', 'URI');
-c_preview.showTitle();
-c_preview.showPreview();
+//1과 2는 독립된 렉시컬 환경
+let c_preview1 = new C_Proxy('1타이틀', '1URI');
+c_preview1.showTitle();
+c_preview1.showPreview();
+
+let c_preview2 = new C_Proxy('2타이틀', '2URI');
+c_preview2.showTitle();
+c_preview2.showPreview();
+
+c_preview1.showTitle();
+c_preview1.showPreview();
